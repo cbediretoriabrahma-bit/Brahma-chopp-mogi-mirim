@@ -1,0 +1,7 @@
+<!doctype html><html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#e30613"><link rel="manifest" href="/manifest.json"><link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}"><title>{{ store_name }}</title></head><body>
+<div class="top">{{ slogan|upper }}</div>
+<nav class="nav"><a class="brand" href="/">🍺 {{ store_name }}</a><div class="links"><a href="/">Ofertas</a><a href="/cart">Carrinho ({{ cart_count }})</a>{% if customer_logged %}<a href="/account">Minha conta</a><a href="/logout">Sair</a>{% else %}<a href="/login">Entrar</a><a href="/register">Cadastrar</a>{% endif %}<a href="/admin">Painel</a></div></nav>
+{% with messages=get_flashed_messages(with_categories=true) %}{% for cat,msg in messages %}<div class="flash {{cat}}">{{msg}}</div>{% endfor %}{% endwith %}
+{% block content %}{% endblock %}
+<footer class="footer"><b>{{ store_name }}</b><br>{{ address }}<br>Telefone {{ phone }} • WhatsApp {{ whatsapp }}<br><br><b>{{ slogan }}</b></footer>
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/service-worker.js')}</script></body></html>
