@@ -1,18 +1,11 @@
 services:
   - type: web
-    name: cervejeiros-loja
-    runtime: python
-    plan: free
+    name: chopp-brahma-mogi-mirim
+    env: python
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app
     envVars:
       - key: SECRET_KEY
         generateValue: true
-      - key: DATABASE_URL
-        fromDatabase:
-          name: cervejeiros-db
-          property: connectionString
-
-databases:
-  - name: cervejeiros-db
-    plan: free
+      - key: ADMIN_PASSWORD
+        value: "1234"
