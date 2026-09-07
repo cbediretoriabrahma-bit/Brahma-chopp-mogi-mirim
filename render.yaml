@@ -3,9 +3,13 @@ services:
     name: chopp-brahma-mogi-mirim
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
+    startCommand: gunicorn persistent_app:app
     envVars:
       - key: SECRET_KEY
         generateValue: true
       - key: ADMIN_PASSWORD
         value: "1234"
+    disk:
+      name: brahma-app-data
+      mountPath: /opt/render/project/src/static/uploads
+      sizeGB: 1
