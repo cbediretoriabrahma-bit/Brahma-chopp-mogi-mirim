@@ -1,1 +1,71 @@
-{% extends 'base.html' %}{% block content %}<section class="hero"><div class="hero-card"><h1>Chopp Brahma Mogi Mirim</h1><div class="slogan">Aqui tem oferta de verdade</div><p>Peça chopp, barris e acessórios pelo celular. Acumule <b>10 pontos a cada R$ 100,00 pagos</b>.</p><a class="btn" href="#produtos">Ver ofertas</a></div></section><main class="wrap" id="produtos"><h2>Ofertas e produtos</h2><div class="grid">{% for p in products %}<article class="card">{% if p.image %}<img src="{{ url_for('static',filename='uploads/'+p.image) }}">{% else %}<img src="{{ url_for('static',filename='capa_brahma.jpg') }}">{% endif %}<div class="card-body"><h3>{{p.name}}</h3><p class="muted">{{p.description}}</p><div class="price">{{p.price|money}}</div><p>Estoque: {{p.stock}}</p><form method="post" action="/cart/add/{{p.id}}"><button class="btn full" {% if p.stock<=0 %}disabled{% endif %}>Adicionar ao carrinho</button></form></div></article>{% endfor %}</div></main>{% endblock %}
+{% extends 'base.html' %}
+{% block content %}
+<main class="storefront">
+  <section class="brand-banner" aria-label="Chopp Brahma Mogi Mirim">
+    <img src="{{ url_for('static',filename='capa_brahma.jpg') }}" alt="Chopp Brahma Mogi Mirim">
+  </section>
+
+  <section class="contact-strip" aria-label="Contato da loja">
+    <div class="contact-item">
+      <span class="contact-icon">📍</span>
+      <div><small>Endereço</small><strong>Av. 22 de Outubro, 826</strong><span>Mogi Mirim</span></div>
+    </div>
+    <a class="contact-item" href="tel:+551938062786">
+      <span class="contact-icon">☎️</span>
+      <div><small>Telefone</small><strong>(19) 3806-2786</strong></div>
+    </a>
+    <a class="contact-item whatsapp" href="https://wa.me/5519974019632" target="_blank" rel="noopener">
+      <span class="contact-icon">💬</span>
+      <div><small>WhatsApp</small><strong>(19) 97401-9632</strong></div>
+    </a>
+  </section>
+
+  <section class="loyalty-card">
+    <span class="loyalty-star">★</span>
+    <div>
+      <small>Programa de pontos</small>
+      <strong>A cada R$ 100, ganhe 10 pontos</strong>
+      <span>Seus pontos ficam salvos no histórico da sua conta.</span>
+    </div>
+    {% if customer_logged %}<a href="/account" class="loyalty-arrow" aria-label="Ver meus pontos">›</a>{% else %}<a href="/register" class="loyalty-arrow" aria-label="Cadastrar">›</a>{% endif %}
+  </section>
+
+  <section class="products-section" id="produtos">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">Chopp, barris e acessórios</span>
+        <h1>Nossos produtos</h1>
+      </div>
+      <a href="/cart" class="cart-shortcut">Ver carrinho <span>{{ cart_count }}</span></a>
+    </div>
+
+    <div class="product-grid">
+      {% for p in products %}
+      <article class="product-card">
+        <div class="product-image-wrap">
+          {% if p.image %}
+            <img class="product-image" src="{{ url_for('static',filename='uploads/'+p.image) }}" alt="{{p.name}}" loading="lazy">
+          {% else %}
+            <img class="product-image product-placeholder" src="{{ url_for('static',filename='capa_brahma.jpg') }}" alt="{{p.name}}" loading="lazy">
+          {% endif %}
+          {% if p.stock<=0 %}<span class="sold-out">Indisponível</span>{% endif %}
+        </div>
+        <div class="product-body">
+          <h2>{{p.name}}</h2>
+          {% if p.description %}<p class="product-description">{{p.description}}</p>{% endif %}
+          <div class="product-meta">
+            <div class="price">{{p.price|money}}</div>
+            <span class="stock">{% if p.stock>0 %}Disponível{% else %}Sem estoque{% endif %}</span>
+          </div>
+          <form method="post" action="/cart/add/{{p.id}}">
+            <button class="btn-add" {% if p.stock<=0 %}disabled{% endif %}>
+              <span>🛒</span> Adicionar
+            </button>
+          </form>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+</main>
+{% endblock %}
