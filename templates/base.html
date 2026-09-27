@@ -6,47 +6,15 @@
   <meta name="theme-color" content="#d71920">
   <meta name="description" content="Chopp Brahma Mogi Mirim - pedidos de chopp, barris e acessórios.">
   <link rel="manifest" href="/manifest.json">
-  <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}?v=3">
+  <link rel="stylesheet" href="{{ url_for('static',filename='enhanced.css') }}?v=3">
   <title>{{ store_name }}</title>
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="mini-brand" href="/" aria-label="Início">
-        <span class="beer-mark">🍺</span>
-        <span>{{ store_name }}</span>
-      </a>
-      <nav class="quick-nav" aria-label="Navegação principal">
-        <a href="/" class="nav-item">Início</a>
-        <a href="/cart" class="nav-item cart-link">Carrinho <span class="cart-badge">{{ cart_count }}</span></a>
-        {% if customer_logged %}
-          <a href="/account" class="nav-item">Minha conta</a>
-          <a href="/logout" class="nav-item subtle">Sair</a>
-        {% else %}
-          <a href="/login" class="nav-item">Entrar</a>
-          <a href="/register" class="nav-item">Cadastrar</a>
-        {% endif %}
-      </nav>
-    </div>
-  </header>
-
-  {% with messages=get_flashed_messages(with_categories=true) %}
-    {% for cat,msg in messages %}<div class="flash {{cat}}">{{msg}}</div>{% endfor %}
-  {% endwith %}
-
+  <header class="site-header"><div class="header-inner"><a class="mini-brand" href="/" aria-label="Início"><span class="beer-mark">🍺</span><span>{{ store_name }}</span></a><nav class="quick-nav" aria-label="Navegação principal"><a href="/" class="nav-item">Início</a><a href="/#produtos" class="nav-item">Produtos</a><a href="/event" class="nav-item">🎉 Evento</a><a href="/#promocoes" class="nav-item">🔥 Promoções</a><a href="/cart" class="nav-item cart-link">Carrinho <span class="cart-badge">{{ cart_count }}</span></a>{% if customer_logged %}<a href="/account" class="nav-item">Minha conta</a><a href="/logout" class="nav-item subtle">Sair</a>{% else %}<a href="/login" class="nav-item">Entrar</a><a href="/register" class="nav-item">Cadastrar</a>{% endif %}</nav></div></header>
+  {% with messages=get_flashed_messages(with_categories=true) %}{% for cat,msg in messages %}<div class="flash {{cat}}">{{msg}}</div>{% endfor %}{% endwith %}
   {% block content %}{% endblock %}
-
-  <footer class="footer">
-    <div class="footer-inner">
-      <b>{{ store_name }}</b>
-      <span>{{ address }}</span>
-      <span>Telefone {{ phone }} • WhatsApp {{ whatsapp }}</span>
-      <a class="admin-access" href="/admin">Acesso administrativo</a>
-    </div>
-  </footer>
-
-  <script>
-    if('serviceWorker' in navigator){navigator.serviceWorker.register('/service-worker.js')}
-  </script>
-</body>
-</html>
+  <a class="floating-whatsapp" href="https://wa.me/{{ whatsapp_number }}?text=Olá%2C%20estou%20no%20aplicativo%20Brahma%20Chopp%20Mogi%20Mirim" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">💬</a>
+  <footer class="footer"><div class="footer-inner"><b>{{ store_name }}</b><span>{{ address }}</span><span>Telefone {{ phone }} • WhatsApp {{ whatsapp }}</span><a class="admin-access" href="/admin">Acesso administrativo</a></div></footer>
+  <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/service-worker.js?v=3')}</script>{% block scripts %}{% endblock %}
+</body></html>

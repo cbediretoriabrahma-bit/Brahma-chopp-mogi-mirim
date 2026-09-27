@@ -1,71 +1,8 @@
-{% extends 'base.html' %}
-{% block content %}
-<main class="storefront">
-  <section class="brand-banner" aria-label="Chopp Brahma Mogi Mirim">
-    <img src="{{ url_for('static',filename='capa_brahma.jpg') }}" alt="Chopp Brahma Mogi Mirim">
-  </section>
-
-  <section class="contact-strip" aria-label="Contato da loja">
-    <div class="contact-item">
-      <span class="contact-icon">📍</span>
-      <div><small>Endereço</small><strong>Av. 22 de Outubro, 826</strong><span>Mogi Mirim</span></div>
-    </div>
-    <a class="contact-item" href="tel:+551938062786">
-      <span class="contact-icon">☎️</span>
-      <div><small>Telefone</small><strong>(19) 3806-2786</strong></div>
-    </a>
-    <a class="contact-item whatsapp" href="https://wa.me/5519974019632" target="_blank" rel="noopener">
-      <span class="contact-icon">💬</span>
-      <div><small>WhatsApp</small><strong>(19) 97401-9632</strong></div>
-    </a>
-  </section>
-
-  <section class="loyalty-card">
-    <span class="loyalty-star">★</span>
-    <div>
-      <small>Programa de pontos</small>
-      <strong>A cada R$ 100, ganhe 10 pontos</strong>
-      <span>Seus pontos ficam salvos no histórico da sua conta.</span>
-    </div>
-    {% if customer_logged %}<a href="/account" class="loyalty-arrow" aria-label="Ver meus pontos">›</a>{% else %}<a href="/register" class="loyalty-arrow" aria-label="Cadastrar">›</a>{% endif %}
-  </section>
-
-  <section class="products-section" id="produtos">
-    <div class="section-heading">
-      <div>
-        <span class="eyebrow">Chopp, barris e acessórios</span>
-        <h1>Nossos produtos</h1>
-      </div>
-      <a href="/cart" class="cart-shortcut">Ver carrinho <span>{{ cart_count }}</span></a>
-    </div>
-
-    <div class="product-grid">
-      {% for p in products %}
-      <article class="product-card">
-        <div class="product-image-wrap">
-          {% if p.image %}
-            <img class="product-image" src="{{ url_for('static',filename='uploads/'+p.image) }}" alt="{{p.name}}" loading="lazy">
-          {% else %}
-            <img class="product-image product-placeholder" src="{{ url_for('static',filename='capa_brahma.jpg') }}" alt="{{p.name}}" loading="lazy">
-          {% endif %}
-          {% if p.stock<=0 %}<span class="sold-out">Indisponível</span>{% endif %}
-        </div>
-        <div class="product-body">
-          <h2>{{p.name}}</h2>
-          {% if p.description %}<p class="product-description">{{p.description}}</p>{% endif %}
-          <div class="product-meta">
-            <div class="price">{{p.price|money}}</div>
-            <span class="stock">{% if p.stock>0 %}Disponível{% else %}Sem estoque{% endif %}</span>
-          </div>
-          <form method="post" action="/cart/add/{{p.id}}">
-            <button class="btn-add" {% if p.stock<=0 %}disabled{% endif %}>
-              <span>🛒</span> Adicionar
-            </button>
-          </form>
-        </div>
-      </article>
-      {% endfor %}
-    </div>
-  </section>
-</main>
-{% endblock %}
+{% extends 'base.html' %}{% block content %}<main class="storefront">
+<section class="brand-banner"><img src="{{ url_for('static',filename='capa_brahma.jpg') }}" alt="Chopp Brahma Mogi Mirim"></section>
+<section class="home-actions"><a href="#produtos" class="home-action"><span>🍺</span><strong>Comprar Chopp</strong><small>Veja os produtos</small></a><a href="/event" class="home-action"><span>🎉</span><strong>Monte seu Evento</strong><small>Calcule os litros</small></a><a href="#promocoes" class="home-action"><span>🔥</span><strong>Promoções</strong><small>Ofertas ativas</small></a><a href="{% if customer_logged %}/account{% else %}/login{% endif %}" class="home-action"><span>📦</span><strong>Meus Pedidos</strong><small>Acompanhe tudo</small></a></section>
+<section class="contact-strip"><div class="contact-item"><span class="contact-icon">📍</span><div><small>Endereço</small><strong>Av. 22 de Outubro, 826</strong><span>Mogi Mirim</span></div></div><a class="contact-item" href="tel:+551938062786"><span class="contact-icon">☎️</span><div><small>Telefone</small><strong>(19) 3806-2786</strong></div></a><a class="contact-item whatsapp" href="https://wa.me/5519974019632" target="_blank" rel="noopener"><span class="contact-icon">💬</span><div><small>WhatsApp</small><strong>(19) 97401-9632</strong></div></a></section>
+<section class="loyalty-card"><span class="loyalty-star">★</span><div><small>Clube Brahma Mogi Mirim</small><strong>A cada R$ 10,00 em compras = 1 ponto</strong><span>Acumule pontos e troque por benefícios direto no aplicativo.</span></div>{% if customer_logged %}<a href="/account#fidelidade" class="loyalty-arrow">›</a>{% else %}<a href="/register" class="loyalty-arrow">›</a>{% endif %}</section>
+{% if promotions %}<section class="section-block" id="promocoes"><div class="section-heading"><div><span class="eyebrow">Somente enquanto estiver ativa</span><h1>🔥 Promoções</h1></div></div><div class="promo-grid">{% for pr in promotions %}<article class="promo-card"><span class="promo-label">PROMOÇÃO</span><h3>{{pr.title}}</h3><p>{{pr.product_name or 'Oferta especial'}}</p>{% if pr.promo_price is not none %}<strong>{{pr.promo_price|money}}</strong>{% endif %}<small>Até {{pr.ends_at.replace('T',' ')}}</small></article>{% endfor %}</div></section>{% endif %}
+{% if combos %}<section class="section-block"><div class="section-heading"><div><span class="eyebrow">Praticidade para sua festa</span><h1>🔥 Combos Brahma</h1></div></div><div class="product-grid">{% for c in combos %}<article class="product-card combo-card"><div class="combo-icon">🍻</div><div class="product-body"><h2>{{c.title}}</h2><p class="product-description">{{c.description}}</p><div class="combo-price"><small>De {{c.original_price|money}}</small><strong>{{c.price|money}}</strong>{% if c.original_price>c.price %}<span>Economize {{(c.original_price-c.price)|money}}</span>{% endif %}</div><form method="post" action="/cart/add-combo/{{c.id}}"><button class="btn-add" {% if c.stock==0 %}disabled{% endif %}>🛒 Quero este combo</button></form></div></article>{% endfor %}</div></section>{% endif %}
+<section class="products-section" id="produtos"><div class="section-heading"><div><span class="eyebrow">Chopp, barris e acessórios</span><h1>Nossos produtos</h1></div><a href="/cart" class="cart-shortcut">Ver carrinho <span>{{ cart_count }}</span></a></div><div class="product-grid">{% for p in products %}<article class="product-card"><div class="product-image-wrap">{% if p.image %}<img class="product-image" src="{{ url_for('static',filename='uploads/'+p.image) }}" alt="{{p.name}}">{% else %}<img class="product-image product-placeholder" src="{{ url_for('static',filename='capa_brahma.jpg') }}" alt="{{p.name}}">{% endif %}{% if p.stock<=0 %}<span class="sold-out">Indisponível</span>{% endif %}{% if p.promo_price is not none %}<span class="promo-ribbon">PROMO</span>{% endif %}{% if customer_logged %}<form class="favorite-form" method="post" action="/favorite/{{p.id}}"><button class="favorite-btn">{% if p.id in favorites %}❤️{% else %}🤍{% endif %}</button></form>{% endif %}</div><div class="product-body"><h2>{{p.name}}</h2>{% if p.description %}<p class="product-description">{{p.description}}</p>{% endif %}<div class="product-meta"><div>{% if p.promo_price is not none %}<small class="old-price">{{p.normal_price|money}}</small>{% endif %}<div class="price">{{p.effective_price|money}}</div></div><span class="stock">{% if p.stock>0 %}Disponível{% else %}Sem estoque{% endif %}</span></div><form method="post" action="/cart/add/{{p.id}}"><button class="btn-add" {% if p.stock<=0 %}disabled{% endif %}>🛒 Adicionar</button></form></div></article>{% endfor %}</div></section></main>{% endblock %}
