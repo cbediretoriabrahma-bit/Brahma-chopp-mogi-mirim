@@ -6,15 +6,21 @@
   <meta name="theme-color" content="#d71920">
   <meta name="description" content="Chopp Brahma Mogi Mirim - pedidos de chopp, barris e acessórios.">
   <link rel="manifest" href="/manifest.json">
-  <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}?v=3">
-  <link rel="stylesheet" href="{{ url_for('static',filename='enhanced.css') }}?v=3">
+  <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}?v=4">
+  <link rel="stylesheet" href="{{ url_for('static',filename='enhanced.css') }}?v=4">
+  <style>
+    .mini-brand{display:flex;align-items:center;gap:10px}
+    .header-brand-logo{display:block;width:118px;max-height:46px;object-fit:contain;flex:0 0 auto}
+    @media(max-width:720px){.header-brand-logo{width:92px;max-height:36px}.mini-brand{gap:7px}}
+    @media(max-width:390px){.header-brand-logo{width:78px;max-height:32px}}
+  </style>
   <title>{{ store_name }}</title>
 </head>
 <body>
-  <header class="site-header"><div class="header-inner"><a class="mini-brand" href="/" aria-label="Início"><span class="beer-mark">🍺</span><span>{{ store_name }}</span></a><nav class="quick-nav" aria-label="Navegação principal"><a href="/" class="nav-item">Início</a><a href="/#produtos" class="nav-item">Produtos</a><a href="/event" class="nav-item">🎉 Evento</a><a href="/#promocoes" class="nav-item">🔥 Promoções</a><a href="/cart" class="nav-item cart-link">Carrinho <span class="cart-badge">{{ cart_count }}</span></a>{% if customer_logged %}<a href="/account" class="nav-item">Minha conta</a><a href="/logout" class="nav-item subtle">Sair</a>{% else %}<a href="/login" class="nav-item">Entrar</a><a href="/register" class="nav-item">Cadastrar</a>{% endif %}</nav></div></header>
+  <header class="site-header"><div class="header-inner"><a class="mini-brand" href="/" aria-label="Início"><span>{{ store_name }}</span><img class="header-brand-logo" src="{{ url_for('static',filename='cervejeiros-logo.webp') }}" alt="Cervejeiros by WOC Group"></a><nav class="quick-nav" aria-label="Navegação principal"><a href="/" class="nav-item">Início</a><a href="/#produtos" class="nav-item">Produtos</a><a href="/event" class="nav-item">🎉 Evento</a><a href="/#promocoes" class="nav-item">🔥 Promoções</a><a href="/cart" class="nav-item cart-link">Carrinho <span class="cart-badge">{{ cart_count }}</span></a>{% if customer_logged %}<a href="/account" class="nav-item">Minha conta</a><a href="/logout" class="nav-item subtle">Sair</a>{% else %}<a href="/login" class="nav-item">Entrar</a><a href="/register" class="nav-item">Cadastrar</a>{% endif %}</nav></div></header>
   {% with messages=get_flashed_messages(with_categories=true) %}{% for cat,msg in messages %}<div class="flash {{cat}}">{{msg}}</div>{% endfor %}{% endwith %}
   {% block content %}{% endblock %}
   <a class="floating-whatsapp" href="https://wa.me/{{ whatsapp_number }}?text=Olá%2C%20estou%20no%20aplicativo%20Brahma%20Chopp%20Mogi%20Mirim" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">💬</a>
   <footer class="footer"><div class="footer-inner"><b>{{ store_name }}</b><span>{{ address }}</span><span>Telefone {{ phone }} • WhatsApp {{ whatsapp }}</span><a class="admin-access" href="/admin">Acesso administrativo</a></div></footer>
-  <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/service-worker.js?v=3')}</script>{% block scripts %}{% endblock %}
+  <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/service-worker.js?v=4')}</script>{% block scripts %}{% endblock %}
 </body></html>
