@@ -17,6 +17,11 @@ original.app.config['UPLOAD_FOLDER'] = PERSISTENT_DIR
 # Garante que o banco persistente exista e tenha todas as tabelas.
 original.init_db()
 
+# Instala as novas funções comerciais sobre a versão atual sem apagar
+# clientes, pedidos, produtos, fotos ou histórico existentes.
+import enhancements
+enhancements.install(original)
+
 app = original.app
 
 
