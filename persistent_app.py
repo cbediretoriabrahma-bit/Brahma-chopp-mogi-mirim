@@ -22,6 +22,10 @@ original.init_db()
 import enhancements
 enhancements.install(original)
 
+# Pequenos ajustes de compatibilidade da nova versão.
+import enhancements_patch
+enhancements_patch.install(original)
+
 app = original.app
 
 
